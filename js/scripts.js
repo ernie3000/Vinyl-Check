@@ -1,15 +1,44 @@
- // Name, Height  and Type of Pokemon Array//
-var repository=[
- ['Stoutland', 2.9 ,['Intimidate' , 'Scrappy' , 'Sandrush']],
- ['Clefable', 9.8 , ['Cutecharm', 'Magicguard', 'Unaware']],
- ['Gloom', 8.8 , ['Stench' , 'Chlorophyll']]
-];
-//object loop for repository, outputs every Pokemon //
-  Object.keys(repository).forEach(function(currentPokemon){
-document.write ('<p>'+ (repository[currentPokemon]) + '</p>')
-// checks if a Pokemon is above value 8 to write Text//
-if (repository[currentPokemon][1] > 8){
-    document.write ('Thats A Big One!!')
-    }});
+    var pokemonRepository = (function () {
+      var repository =[
+         {
+          name: 'Stoutland',
+          height: 2.7,           
+          types: ['Cutecharm', 'Magicguard', 'Unaware']
+        }, 
+          {
+          name: 'Clefable',
+          height: 9.6,
+          types: ['Stench' , 'Chlorophyll']
+        },
+       {
+          name: 'Gloom',
+          height: 3.5,
+          types: ['Intimidate' , 'Scrappy' , 'Sandrush']
+        }
+      ];
+        function add(pokemon) {
+          repository.push(pokemon);
+        }
+      
+        function getAll() {
+          return repository;
+        }
+      
+        return {
+          add: add,
+          getAll: getAll
+        };
+      })();
+//------------------------------//
+      pokemonRepository.add({ name: 'Blastoise', height:5.03 , types:['Water'] });
+//------------------------------//
+var allPokemon = pokemonRepository.getAll();
+var getSize = pokemonRepository.getAll();
+//--------------------------------//
 
-   
+allPokemon.forEach(function (pokemon) {
+  document.write('<p>'+pokemon.name+'</p>');
+  document.write('<p>'+pokemon.height+'</p>');
+  document.write('<p>'+pokemon.types+'</p>');
+if (pokemon.height > 4.0){document.write('This Is A Big One')}; 
+});
