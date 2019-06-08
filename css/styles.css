@@ -1,9 +1,9 @@
 /* Var Used */
 :root {
-  --primary-color: #357b70;
+  --primary-color: #0d18bb;
   --secondary-color: #e0b354;
   --dark-grey: #2b2b2b;
-  --background-color: #97b6e4da;
+  --background-color: #0c59ccda;
   --visitedcolor: #f3081c;
   --activecolor: #f3f3f2;
   --background-color2: LightGrey;
@@ -57,3 +57,34 @@ a:visited {
   /* visited link */
   color: var(--visitedcolor);
 }
+.page-header {
+  display: flex;
+  width: 100%;
+  padding: 20px;
+}
+.page-footer {
+  clear: both;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+button {
+  /* overwrites browser defaults and resets the border */
+  border: none;
+  /* takes the font from the outer container */
+  font-family: inherit;
+  /* styles the background color, font color, and text decoration (underline, etc.) of the button */
+  background-color: #3a357b;
+  color: white;
+  text-decoration: none;
+  /*adds spacing to the button (this will be discussed more in-depth later) */
+  padding: 10px;
+  border-radius: 3px;
+  /* gives the button a bottom border with a width of 2px, a type of solid, and a color in RGBA format */
+  border-bottom: 2px solid rgba(0, 0, 0, 0.3);
+  border-top: 2px solid rgba(0, 0, 0, 0.3);
+  button: hover; 
+  button: focus;
+  cursor: pointer;
+  opacity: 0.8;
+  }
