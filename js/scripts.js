@@ -30,15 +30,40 @@
         };
       })();
 //------------------------------//
-      pokemonRepository.add({ name: 'Blastoise', height:5.03 , types:['Water'] });
+     pokemonRepository.add({ name: 'Blastoise', height:5.03 , types:['Water'] });
 //------------------------------//
-var allPokemon = pokemonRepository.getAll();
-var getSize = pokemonRepository.getAll();
-//--------------------------------//
+var pokemonRepositoryNew = pokemonRepository.getAll();
 
-allPokemon.forEach(function (pokemon) {
-  document.write('<p>'+pokemon.name+'</p>');
-  document.write('<p>'+pokemon.height+'</p>');
-  document.write('<p>'+pokemon.types+'</p>');
-if (pokemon.height > 4.0){document.write('This Is A Big One')}; 
+
+ //add-list-item function:
+ function addListItem(pokemon) {
+  var listItemheight = document.createTextNode(pokemon.height); 
+  var listItemtypes = document.createTextNode(pokemon.types);      
+  var buttonText = document.createTextNode(pokemon.name);          
+
+   //creating  DOM
+  var $NameButton = document.createElement('button');
+  var $li = document.createElement('li');
+  var $ul = document.querySelector('ul');
+//adding classes
+  $NameButton.classList.add('Name-button');                   
+  $li.classList.add('list-item');
+  $ul.classList.add('pokemon-list');
+    //appending button and Items
+  $NameButton.appendChild(buttonText);                       
+  $li.appendChild($NameButton);
+  $li.appendChild(listItemheight);
+  $li.appendChild(listItemtypes);
+  $ul.appendChild($li);
+  $NameButton.addEventListener('click', function(event) {       
+    showDetails(pokemon)});
+};
+
+//show-details function
+function showDetails(pokemon) {
+  console.log(pokemon.name)};
+
+//loop.creating.pokemons.from.repository
+pokemonRepositoryNew.forEach(function(pokemon) {
+  addListItem(pokemon)
 });
