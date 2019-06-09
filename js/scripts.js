@@ -1,37 +1,97 @@
-    var pokemonRepository = (function () {
-      var repository =[
-         {
-          name: 'Stoutland',
-          height: 2.7,           
-          types: ['Cutecharm', 'Magicguard', 'Unaware']
-        }, 
-          {
-          name: 'Clefable',
-          height: 9.6,
-          types: ['Stench' , 'Chlorophyll']
-        },
-       {
-          name: 'Gloom',
-          height: 3.5,
-          types: ['Intimidate' , 'Scrappy' , 'Sandrush']
-        }
-      ];
-        function add(pokemon) {
-          repository.push(pokemon);
-        }
+   // var pokemonRepository = (function () {
+     // var repository =[
+       //  {
+         // name: 'Stoutland',
+          //height: 2.7,           
+          //types: ['Cutecharm', 'Magicguard', 'Unaware']
+        //}, 
+          //{
+          //name: 'Clefable',
+          //height: 9.6,
+          //types: ['Stench' , 'Chlorophyll']
+       // },
+      // {
+        //  name: 'Gloom',
+         // height: 3.5,
+          //types: ['Intimidate' , 'Scrappy' , 'Sandrush']
+        //}
+      //];
+       /// function add(pokemon) {
+         /// repository.push(pokemon);
+        //}
       
-        function getAll() {
-          return repository;
-        }
+    ///    function getAll() {
+       //   return repository;
+        //}
       
-        return {
-          add: add,
-          getAll: getAll
+     //   return {
+       //   add: add,
+         // getAll: getAll
+        //};
+      //})();
+//------------------------------//
+//     pokemonRepository.add({ name: 'Blastoise', height:5.03 , types:['Water'] });
+//------------------------------//
+var pokemonRepository = (function () {
+  var repository = [];
+  var apiUrl = 'https://pokeapi.co/api/v2/pokemon/?limit=150';
+
+
+
+  function loadList() {
+    return fetch(apiUrl).then(function (response) {
+      return response.json();
+    }).then(function (json) {
+      json.results.forEach(function (item) {
+        var pokemon = {
+          name: item.name,
+          height: item.height,
+          detailsUrl: item.url
         };
-      })();
-//------------------------------//
-     pokemonRepository.add({ name: 'Blastoise', height:5.03 , types:['Water'] });
-//------------------------------//
+        add(pokemon);
+      });
+    }).catch(function (e) {
+      console.error(e);
+    })
+  }
+  
+  function loadDetails(item) {
+    var url = item.detailsUrl;
+    return fetch(url).then(function (response) {
+      return response.json();
+    }).then(function (details) {
+      item.imageUrl = details.sprites.front_default;
+      item.height = details.height;
+      item.types = Object.keys(details.types);
+    }).catch(function (e) {
+      console.error(e);
+    });
+  }
+function add(pokemon) {
+         repository.push(pokemon);
+        }
+      
+function getAll() {
+ return repository;
+        }
+  return {
+    add: add,
+    getAll: getAll,  
+    loadList: loadList,  
+    loadDetails: loadDetails
+  
+  
+  };
+})();
+
+pokemonRepository.loadList().then(function() {
+  pokemonRepository.getAll().forEach(function(pokemon){
+    addListItem(pokemon);
+  });
+});
+
+//-------------------------------------------------------------//
+
 var pokemonRepositoryNew = pokemonRepository.getAll();
 
 
@@ -52,16 +112,17 @@ var pokemonRepositoryNew = pokemonRepository.getAll();
     //appending button and Items
   $NameButton.appendChild(buttonText);                       
   $li.appendChild($NameButton);
-  $li.appendChild(listItemheight);
-  $li.appendChild(listItemtypes);
   $ul.appendChild($li);
   $NameButton.addEventListener('click', function(event) {       
     showDetails(pokemon)});
 };
 
 //show-details function
-function showDetails(pokemon) {
-  console.log(pokemon.name)};
+
+function showDetails(item) {
+  pokemonRepository.loadDetails(item).then(function () {
+    console.log(item);   });
+}
 
 //loop.creating.pokemons.from.repository
 pokemonRepositoryNew.forEach(function(pokemon) {
