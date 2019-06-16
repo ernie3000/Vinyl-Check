@@ -1,37 +1,4 @@
-   // var pokemonRepository = (function () {
-     // var repository =[
-       //  {
-         // name: 'Stoutland',
-          //height: 2.7,           
-          //types: ['Cutecharm', 'Magicguard', 'Unaware']
-        //}, 
-          //{
-          //name: 'Clefable',
-          //height: 9.6,
-          //types: ['Stench' , 'Chlorophyll']
-       // },
-      // {
-        //  name: 'Gloom',
-         // height: 3.5,
-          //types: ['Intimidate' , 'Scrappy' , 'Sandrush']
-        //}
-      //];
-       /// function add(pokemon) {
-         /// repository.push(pokemon);
-        //}
-      
-    ///    function getAll() {
-       //   return repository;
-        //}
-      
-     //   return {
-       //   add: add,
-         // getAll: getAll
-        //};
-      //})();
-//------------------------------//
-//     pokemonRepository.add({ name: 'Blastoise', height:5.03 , types:['Water'] });
-//------------------------------//
+
 var pokemonRepository = (function () {
   var repository = [];
   var apiUrl = 'https://pokeapi.co/api/v2/pokemon/?limit=150';
@@ -96,35 +63,130 @@ var pokemonRepositoryNew = pokemonRepository.getAll();
 
 
  //add-list-item function:
+ 
  function addListItem(pokemon) {
   var listItemheight = document.createTextNode(pokemon.height); 
-  var listItemtypes = document.createTextNode(pokemon.types);      
+  var listItemtypes = document.createTextNode(pokemon.types)  
   var buttonText = document.createTextNode(pokemon.name);          
 
    //creating  DOM
+
   var $NameButton = document.createElement('button');
   var $li = document.createElement('li');
-  var $ul = document.querySelector('ul');
-//adding classes
+  var $ul = document.getElementById('Poke-List');
+  var $modal = document.createElement ('modal-container');
+
+  //adding classes
   $NameButton.classList.add('Name-button');                   
   $li.classList.add('list-item');
-  $ul.classList.add('pokemon-list');
-    //appending button and Items
+  $modal.classList.add('modal-container')
+  
+  //appending button and Items
+ 
+
+  document.getElementById('Poke-List').appendChild($li);
+  document.getElementById('modal-container').appendChild($modal);
+  $ul.appendChild($modal);
   $NameButton.appendChild(buttonText);                       
   $li.appendChild($NameButton);
-  $ul.appendChild($li);
+ 
+//on click show details 
+
   $NameButton.addEventListener('click', function(event) {       
-    showDetails(pokemon)});
+     showDetails(pokemon)});
 };
+//------------------------------------------------------------//
 
-//show-details function
 
-function showDetails(item) {
-  pokemonRepository.loadDetails(item).then(function () {
-    console.log(item);   });
-}
 
 //loop.creating.pokemons.from.repository
 pokemonRepositoryNew.forEach(function(pokemon) {
   addListItem(pokemon)
 });
+
+// Showing Modal with Picture / Height / Name
+
+function showDetails(item) {
+  pokemonRepository.loadDetails(item).then(function () {
+    showModal(item);   });
+};
+
+
+
+//-----------------------------
+// creating modal content
+function showModal(item) {
+  var $modalContainer = document.querySelector('modal-container');
+
+  //clearing all existing modal content
+  $modalContainer.innerHTML = '';
+
+  //creating div element in DOM
+
+  var modal = document.createElement('div');
+  
+  //adding class to div DOM element
+  modal.classList.add('modal');
+  $modalContainer.classList.add('is-visible');
+  
+  
+  //creating closing button in modal content
+  var closeButtonElement = document.createElement('button');
+  closeButtonElement.classList.add('modal-close');
+  closeButtonElement.innerText = 'Close';
+  
+
+
+  // adding event listener to close modal when clicked on button
+  closeButtonElement.addEventListener('click', hideModal);
+  window.addEventListener('keydown', (e) => {
+   var $modalContainer = document.querySelector('modal-container');
+    if (e.key === 'Escape' && $modalContainer.classList.contains('is-visible')) {
+      hideModal();  
+    }
+  });
+
+
+  $modalContainer.addEventListener('click', e => {
+    var target = e.target;
+    if (target === $modalContainer) {
+      hideModal();
+    }
+});
+
+
+
+  function hideModal() {
+    var $modalContainer = document.querySelector('modal-container');
+    $modalContainer.classList.remove('is-visible');
+  };
+
+
+
+
+
+  
+  //creating element for name in modal content
+  var nameElement = document.createElement('h1');
+  nameElement.innerText = item.name;
+
+  // creating img in modal content
+  var imageElement = document.createElement('img');
+  imageElement.classList.add('modal-img');
+  imageElement.setAttribute('src', item.imageUrl);                                                                                   
+
+  //creating element for height in modal content
+  var heightElement = document.createElement('p');
+  heightElement.innerText = 'height : ' + item.height;
+
+ 
+  //appending modal content to webpage
+  modal.appendChild(closeButtonElement);
+  modal.appendChild(nameElement);
+  modal.appendChild(imageElement);
+  modal.appendChild(heightElement);
+  $modalContainer.appendChild(modal)
+  
+  
+};
+  
